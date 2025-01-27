@@ -1,5 +1,6 @@
 {
   "nav.movies": "Movies",
   "nav.books": "Books",
-  "nav.groceries": "Groceries"
+  "nav.groceries": "Groceries",
+  "nav.all": "All"
 }

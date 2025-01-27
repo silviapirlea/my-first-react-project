@@ -7,10 +7,10 @@ import Table from '@mui/material/Table';
 import {flexRender} from "@tanstack/react-table";
 
 
-export function TableMUI(props: {type: ItemType}) {
+export function TableMUI(props: {type: ItemType | undefined}) {
     const items = useItems();
     const filteredItems = useMemo(() => {
-        return items.filter(item => item.type === props.type);
+        return items.filter(item => props.type == ItemType.ALL || item.type === props.type);
     }, [items, props.type]);
 
     const table = useTableItems(filteredItems);

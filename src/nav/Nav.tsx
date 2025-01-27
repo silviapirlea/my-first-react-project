@@ -45,6 +45,7 @@ export function NavMUI() {
                 <Tab className={classes.tabColor} icon={<WatchLater/>} value="/watchlist" label={intl.formatMessage({id: 'nav.movies'})}/>
                 <Tab className={classes.tabColor} icon={<MenuBook/>} value="/books-list" label={intl.formatMessage({id: 'nav.books'})} />
                 <Tab className={classes.tabColor} icon={<ShoppingCart/>} value="/shopping-list" label={intl.formatMessage({id: 'nav.groceries'})}/>
+                <Tab className={classes.tabColor} value="/all" label={intl.formatMessage({id: 'nav.all'})}/>
             </Tabs>
         </Box>
     );

@@ -20,7 +20,7 @@ const messages = {
 function App() {
     const [locale, setLocale] = useState('en');
 
-    const changeLanguage = (lang) => {
+    const changeLanguage = (lang: string) => {
         setLocale(lang);
     };
 
@@ -35,8 +35,9 @@ function App() {
                     <Route path='/' element={<Layout/>}>
                         <Route index element={<List type={ItemType.WATCHLIST}/>}/>
                         <Route path={'/watchlist'} element={<List type={ItemType.WATCHLIST}/>}/>
-                        <Route path='/books-list' element={<Table type={ItemType.BOOKS_LIST}/>}/>
-                        <Route path='/shopping-list' element={<TableMUI type={ItemType.SHOPPING_LIST}/>}/>
+                        <Route path='/books-list' element={<List type={ItemType.BOOKS_LIST}/>}/>
+                        <Route path='/shopping-list' element={<List type={ItemType.SHOPPING_LIST}/>}/>
+                        <Route path='/all' element={<TableMUI type={ItemType.ALL}/>}/>
                     </Route>
                 </Routes>
             </BrowserRouter>

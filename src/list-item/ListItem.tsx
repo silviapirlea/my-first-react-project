@@ -23,7 +23,8 @@ export enum ItemStatus {
 export enum ItemType {
     WATCHLIST = 1,
     BOOKS_LIST = 2,
-    SHOPPING_LIST = 3
+    SHOPPING_LIST = 3,
+    ALL
 }
 
 export function ListItem(props:{item: Item, onUpdate: any}) {

@@ -6,7 +6,7 @@ export function List(props: {type: ItemType}) {
     console.log(props.type);
     const items = useItems();
     const filteredItems = useMemo(() => {
-        return items.filter(item => item.type === props.type);
+        return items.filter(item => props.type == ItemType.ALL || item.type === props.type);
     }, [items, props.type]);
 
     function onItemUpdate(item: Item) {

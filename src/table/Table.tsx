@@ -7,7 +7,7 @@ import {useTableItems} from "./UseTableItems.tsx";
 export function Table(props: {type: ItemType}) {
     const items = useItems();
     const filteredItems = useMemo(() => {
-        return items.filter(item => item.type === props.type);
+        return items.filter(item => props.type == ItemType.ALL || item.type === props.type);
     }, [items, props.type]);
 
     const table = useTableItems(filteredItems);
