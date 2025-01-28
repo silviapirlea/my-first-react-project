@@ -5,6 +5,10 @@ import {SyntheticEvent, useState} from "react";
 import {MenuBook, ShoppingCart, WatchLater} from "@mui/icons-material";
 import {makeStyles} from "@mui/styles";
 import {useIntl} from "react-intl";
+import {ItemType} from "../list-item/ListItem.tsx";
+import {useRecoilState} from "recoil";
+import {itemsTypeState} from "../state/recoil_state.ts";
+import {useItems} from "../list/UseItems.tsx";
 
 export function Nav() {
     return (
@@ -22,16 +26,30 @@ const useStyles = makeStyles({
 });
 
 export function NavMUI() {
-    const [value, setValue] = useState('one');
+    const [value, setValue] = useState('/watchlist');
+    const [itemType, setItemType] = useRecoilState<ItemType>(itemsTypeState);
     const navigate = useNavigate();
     const classes = useStyles();
     const intl = useIntl();
 
+    useItems();
+
     const handleChange = (event: SyntheticEvent, newValue: string) => {
         console.log(newValue);
         setValue(newValue);
+        setItemType(mapToItemType(newValue));
         navigate(newValue);
     };
+
+    function mapToItemType(value: string): ItemType {
+        switch (value) {
+            case '/watchlist':  return ItemType.WATCHLIST;
+            case '/books-list': return ItemType.BOOKS_LIST;
+            case '/shopping-list': return ItemType.SHOPPING_LIST;
+            case '/all': return  ItemType.ALL;
+            default: return ItemType.ALL;
+        }
+    }
 
     return (
         <Box sx={{ width: '100%' }}>

@@ -10,6 +10,8 @@ import roMessages from './i18n/ro.json';
 import {useState} from "react";
 import {IntlProvider} from "react-intl";
 import {LanguageSwitcher} from "./i18n/LanguageSwitcher.tsx";
+import {RecoilRoot} from "recoil";
+import {useItems} from "./list/UseItems.tsx";
 
 const messages = {
     en: enMessages,
@@ -25,24 +27,25 @@ function App() {
     };
 
     return (
-        <IntlProvider locale={locale} messages={messages[locale]}>
-            <LanguageSwitcher
-                currentLocale={locale}
-                onChangeLanguage={changeLanguage}
-            />
-            <BrowserRouter>
-                <Routes>
-                    <Route path='/' element={<Layout/>}>
-                        <Route index element={<List type={ItemType.WATCHLIST}/>}/>
-                        <Route path={'/watchlist'} element={<List type={ItemType.WATCHLIST}/>}/>
-                        <Route path='/books-list' element={<List type={ItemType.BOOKS_LIST}/>}/>
-                        <Route path='/shopping-list' element={<List type={ItemType.SHOPPING_LIST}/>}/>
-                        <Route path='/all' element={<TableMUI type={ItemType.ALL}/>}/>
-                    </Route>
-                </Routes>
-            </BrowserRouter>
-        </IntlProvider>
-
+        <RecoilRoot>
+            <IntlProvider locale={locale} messages={messages[locale]}>
+                <LanguageSwitcher
+                    currentLocale={locale}
+                    onChangeLanguage={changeLanguage}
+                />
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='/' element={<Layout/>}>
+                            <Route index element={<List type={ItemType.WATCHLIST}/>}/>
+                            <Route path={'/watchlist'} element={<List type={ItemType.WATCHLIST}/>}/>
+                            <Route path='/books-list' element={<List type={ItemType.BOOKS_LIST}/>}/>
+                            <Route path='/shopping-list' element={<List type={ItemType.SHOPPING_LIST}/>}/>
+                            <Route path='/all' element={<TableMUI type={ItemType.ALL}/>}/>
+                        </Route>
+                    </Routes>
+                </BrowserRouter>
+            </IntlProvider>
+        </RecoilRoot>
     )
 }
 

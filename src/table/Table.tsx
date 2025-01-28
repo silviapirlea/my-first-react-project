@@ -3,12 +3,16 @@ import {useItems} from "../list/UseItems.tsx";
 import {useMemo} from "react";
 import {flexRender} from "@tanstack/react-table";
 import {useTableItems} from "./UseTableItems.tsx";
+import {useRecoilValue} from "recoil";
+import {filteredItemsState} from "../state/recoil_state.ts";
 
 export function Table(props: {type: ItemType}) {
-    const items = useItems();
-    const filteredItems = useMemo(() => {
-        return items.filter(item => props.type == ItemType.ALL || item.type === props.type);
-    }, [items, props.type]);
+    // const items = useItems();
+    // const filteredItems = useMemo(() => {
+    //     return items.filter(item => props.type == ItemType.ALL || item.type === props.type);
+    // }, [items, props.type]);
+
+    const filteredItems = useRecoilValue(filteredItemsState);
 
     const table = useTableItems(filteredItems);
 
