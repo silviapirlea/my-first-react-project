@@ -1,7 +1,4 @@
-import {useItems} from "../list/UseItems.tsx";
-import {useMemo} from "react";
 import {useTableItems} from "./UseTableItems.tsx";
-import {ItemType} from "../list-item/ListItem.tsx";
 import {Paper, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import Table from '@mui/material/Table';
 import {flexRender} from "@tanstack/react-table";
@@ -9,7 +6,7 @@ import {useRecoilValue} from "recoil";
 import {filteredItemsState} from "../state/recoil_state.ts";
 
 
-export function TableMUI(props: {type: ItemType | undefined}) {
+export function TableMUI() {
     // const items = useItems();
     // const filteredItems = useMemo(() => {
     //     return items.filter(item => props.type == ItemType.ALL || item.type === props.type);

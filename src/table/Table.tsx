@@ -1,12 +1,12 @@
 import {ItemType} from "../list-item/ListItem.tsx";
-import {useItems} from "../list/UseItems.tsx";
+import {useItemsReactive} from "../list/UseItems.tsx";
 import {useMemo} from "react";
 import {flexRender} from "@tanstack/react-table";
 import {useTableItems} from "./UseTableItems.tsx";
 import {useRecoilValue} from "recoil";
 import {filteredItemsState} from "../state/recoil_state.ts";
 
-export function Table(props: {type: ItemType}) {
+export function Table() {
     // const items = useItems();
     // const filteredItems = useMemo(() => {
     //     return items.filter(item => props.type == ItemType.ALL || item.type === props.type);

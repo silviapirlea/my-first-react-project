@@ -1,9 +1,6 @@
 import './App.css'
-import {BrowserRouter, Route, Routes} from "react-router";
 import Layout from "./layout/Layout.tsx";
 import {List} from "./list/List.tsx";
-import {ItemType} from "./list-item/ListItem.tsx";
-import {Table} from "./table/Table.tsx";
 import {TableMUI} from "./table/TableMUI.tsx";
 import enMessages from './i18n/en.json';
 import roMessages from './i18n/ro.json';
@@ -11,7 +8,23 @@ import {useState} from "react";
 import {IntlProvider} from "react-intl";
 import {LanguageSwitcher} from "./i18n/LanguageSwitcher.tsx";
 import {RecoilRoot} from "recoil";
-import {useItems} from "./list/UseItems.tsx";
+import {itemsLoader} from "./loaders/itemsLoader.tsx";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Layout />,
+        loader: itemsLoader,
+        children: [
+            { index: true, element: <List /> },
+            { path: "watchlist", element: <List /> },
+            { path: "books-list", element: <List /> },
+            { path: "shopping-list", element: <List /> },
+            { path: "all", element: <TableMUI /> },
+        ],
+    },
+]);
 
 const messages = {
     en: enMessages,
@@ -33,17 +46,7 @@ function App() {
                     currentLocale={locale}
                     onChangeLanguage={changeLanguage}
                 />
-                <BrowserRouter>
-                    <Routes>
-                        <Route path='/' element={<Layout/>}>
-                            <Route index element={<List type={ItemType.WATCHLIST}/>}/>
-                            <Route path={'/watchlist'} element={<List type={ItemType.WATCHLIST}/>}/>
-                            <Route path='/books-list' element={<List type={ItemType.BOOKS_LIST}/>}/>
-                            <Route path='/shopping-list' element={<List type={ItemType.SHOPPING_LIST}/>}/>
-                            <Route path='/all' element={<TableMUI type={ItemType.ALL}/>}/>
-                        </Route>
-                    </Routes>
-                </BrowserRouter>
+                <RouterProvider router={router} />
             </IntlProvider>
         </RecoilRoot>
     )

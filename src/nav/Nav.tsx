@@ -6,9 +6,8 @@ import {MenuBook, ShoppingCart, WatchLater} from "@mui/icons-material";
 import {makeStyles} from "@mui/styles";
 import {useIntl} from "react-intl";
 import {ItemType} from "../list-item/ListItem.tsx";
-import {useRecoilState} from "recoil";
+import {useSetRecoilState} from "recoil";
 import {itemsTypeState} from "../state/recoil_state.ts";
-import {useItems} from "../list/UseItems.tsx";
 
 export function Nav() {
     return (
@@ -27,15 +26,12 @@ const useStyles = makeStyles({
 
 export function NavMUI() {
     const [value, setValue] = useState('/watchlist');
-    const [itemType, setItemType] = useRecoilState<ItemType>(itemsTypeState);
+    const setItemType = useSetRecoilState<ItemType>(itemsTypeState);
     const navigate = useNavigate();
     const classes = useStyles();
     const intl = useIntl();
 
-    useItems();
-
-    const handleChange = (event: SyntheticEvent, newValue: string) => {
-        console.log(newValue);
+    const handleChange = (_: SyntheticEvent, newValue: string) => {
         setValue(newValue);
         setItemType(mapToItemType(newValue));
         navigate(newValue);

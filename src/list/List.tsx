@@ -1,15 +1,8 @@
-import {Item, ItemType, ListItem} from "../list-item/ListItem.tsx";
-import {useItems} from "./UseItems.tsx";
-import {useMemo} from "react";
+import {Item, ListItem} from "../list-item/ListItem.tsx";
 import {useRecoilValue} from "recoil";
 import {filteredItemsState} from "../state/recoil_state.ts";
 
-export function List(props: {type: ItemType}) {
-    console.log(props.type);
-    // const items = useItems();
-    // const filteredItems = useMemo(() => {
-    //     return items.filter(item => props.type == ItemType.ALL || item.type === props.type);
-    // }, [items, props.type]);
+export function List() {
 
     const filteredItems = useRecoilValue(filteredItemsState);
 
