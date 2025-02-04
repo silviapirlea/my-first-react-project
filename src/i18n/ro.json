@@ -2,5 +2,10 @@
   "nav.movies": "Filme",
   "nav.books": "Carti",
   "nav.groceries": "Cumparaturi",
-  "nav.all": "Toate"
+  "nav.all": "Toate",
+  "list.update": "Actualizeaza",
+  "list.delete": "Sterge",
+  "list.add": "Adauga item nou",
+  "list-item-form.add": "Adauga",
+  "list-item-form.cancel": "Anuleaza"
 }

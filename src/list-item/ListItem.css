@@ -4,3 +4,8 @@
     border: 1px solid white;
     border-radius: 8px;
 }
+
+.actions {
+    display: flex;
+    gap: 16px;
+}

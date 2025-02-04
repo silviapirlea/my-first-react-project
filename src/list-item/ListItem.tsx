@@ -1,5 +1,7 @@
 import './ListItem.css'
 import {Button} from "@mui/material";
+import {Delete} from "@mui/icons-material";
+import {useIntl} from "react-intl";
 
 export interface Item {
     id: number,
@@ -27,7 +29,9 @@ export enum ItemType {
     ALL
 }
 
-export function ListItem(props:{item: Item, onUpdate: any}) {
+export function ListItem(props: { item: Item, onUpdate: (item: Item) => void, onDelete: (id: number) => void }) {
+    const intl = useIntl();
+
     return (
         <div className="item">
             <p>{'Name: ' + props.item.name}</p>
@@ -39,7 +43,14 @@ export function ListItem(props:{item: Item, onUpdate: any}) {
             <p>{'Deadline: ' + props.item.deadline}</p>
             <p>{'Description: ' + props.item.description}</p>
             <p>{props.item.isRepetable ? 'Repetable' : 'Nonrepetable'}</p>
-            <Button color="secondary" variant="contained" onClick={props.onUpdate}>Update</Button>
+            <div className="actions">
+                <Button color="secondary" variant="contained" onClick={() => props.onUpdate(props.item)}>
+                    {intl.formatMessage({id: 'list.update'})}
+                </Button>
+                <Button color="error" variant="contained" startIcon={<Delete/>} onClick={() => props.onDelete(props.item.id)}>
+                    {intl.formatMessage({id: 'list.delete'})}
+                </Button>
+            </div>
         </div>
     )
 }

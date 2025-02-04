@@ -2,5 +2,10 @@
   "nav.movies": "Movies",
   "nav.books": "Books",
   "nav.groceries": "Groceries",
-  "nav.all": "All"
+  "nav.all": "All",
+  "list.update": "Update",
+  "list.delete": "Delete",
+  "list.add": "Add new item",
+  "list-item-form.add": "Add",
+  "list-item-form.cancel": "Cancel"
 }
