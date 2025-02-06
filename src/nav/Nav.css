@@ -1,8 +1,8 @@
 .navbar {
-    display: flex;
-    gap: 16px;
+  display: flex;
+  gap: 16px;
 }
 
 .nav-item {
-    padding: 16px;
+  padding: 16px;
 }
