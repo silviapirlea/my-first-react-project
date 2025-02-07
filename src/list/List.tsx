@@ -11,12 +11,34 @@ import { useIntl } from "react-intl";
 
 export function List() {
   const [open, setOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState<Item | undefined>(undefined);
   const [items, setItems] = useRecoilState(itemsState);
   const intl = useIntl();
   const filteredItems = useRecoilValue(filteredItemsState);
 
-  function onItemUpdate(item: Item) {
-    alert("Update item " + item.id);
+  function openFormWithItem(item: Item): void {
+    setCurrentItem(item);
+    setOpen(true);
+  }
+
+  async function onItemUpdate(item: Item) {
+    try {
+      const response = await fetch(`${BASE_API_URL}/${item.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add item.");
+      }
+
+      const newItem = await response.json();
+
+      setItems(items.map((item) => (item.id === newItem.id ? newItem : item)));
+    } catch (error) {
+      console.error("Error adding item:", error);
+    }
   }
 
   async function onItemDelete(id: number) {
@@ -59,7 +81,7 @@ export function List() {
     <ListItem
       key={item.id}
       item={item}
-      onUpdate={(item: Item) => onItemUpdate(item)}
+      onUpdate={(item: Item) => openFormWithItem(item)}
       onDelete={(id: number) => onItemDelete(id)}
     />
   ));
@@ -70,15 +92,21 @@ export function List() {
           variant="contained"
           color="primary"
           startIcon={<Add />}
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setCurrentItem(undefined);
+            setOpen(true);
+          }}
         >
           {intl.formatMessage({ id: "list.add" })}
         </Button>
       </div>
       <ListItemForm
         open={open}
+        item={currentItem}
         onClose={() => setOpen(false)}
-        onAddItem={(item: Item) => onItemAdd(item)}
+        onAddItem={(item: Item) =>
+          currentItem ? onItemUpdate(item) : onItemAdd(item)
+        }
       ></ListItemForm>
       <div className="list">{itemList}</div>
     </>

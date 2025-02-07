@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Item, ItemStatus, ItemType } from "../list-item/ListItem.tsx";
 import {
   Button,
@@ -13,6 +13,7 @@ import { useIntl } from "react-intl";
 
 interface ItemFormProps {
   open: boolean;
+  item?: Item;
   onClose: () => void;
   onAddItem: (item: Item) => void;
 }
@@ -22,7 +23,12 @@ interface ItemFormErrors {
   amount?: string;
 }
 
-export function ListItemForm({ open, onClose, onAddItem }: ItemFormProps) {
+export function ListItemForm({
+  open,
+  item,
+  onClose,
+  onAddItem,
+}: ItemFormProps) {
   const initialItemState: Item = {
     id: Date.now(),
     name: "",
@@ -36,6 +42,15 @@ export function ListItemForm({ open, onClose, onAddItem }: ItemFormProps) {
     isRepetable: false,
   };
   const [newItem, setNewItem] = useState<Item>(initialItemState);
+
+  useEffect(() => {
+    if (item) {
+      setNewItem({ ...item, deadline: new Date(item.deadline) });
+    } else {
+      setNewItem(initialItemState);
+    }
+  }, [item, open]);
+
   const [errors, setErrors] = useState<ItemFormErrors>({});
   const intl = useIntl();
 
@@ -62,7 +77,7 @@ export function ListItemForm({ open, onClose, onAddItem }: ItemFormProps) {
   const handleSubmit = () => {
     if (!validateForm()) return;
 
-    onAddItem({ ...newItem, id: Date.now() });
+    onAddItem({ ...newItem, id: newItem.id ? newItem.id : Date.now() });
     setNewItem(initialItemState);
     onClose();
   };
