@@ -7,5 +7,6 @@
   "list.delete": "Delete",
   "list.add": "Add new item",
   "list-item-form.add": "Add",
+  "list-item-form.save": "Save",
   "list-item-form.cancel": "Cancel"
 }

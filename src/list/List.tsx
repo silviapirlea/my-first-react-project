@@ -3,13 +3,13 @@ import { useRecoilValue } from "recoil";
 import { filteredItemsState } from "../state/recoil_state.ts";
 import { useState } from "react";
 import {Alert, Button, LinearProgress} from "@mui/material";
-import { ListItemForm } from "../list-item/ListItemForm.tsx";
 import './List.css'
 import { Add } from "@mui/icons-material";
 import { BASE_API_URL } from "../utils/constants.tsx";
 import { useIntl } from "react-intl";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {useItemsQuery} from "./UseItems.tsx";
+import {ListItemFormDialog} from "../list-item/ListItemFormDialog.tsx";
 
 export function List() {
   const [open, setOpen] = useState(false);
@@ -20,7 +20,7 @@ export function List() {
   const queryClient = useQueryClient();
 
   function openFormWithItem(item: Item): void {
-    setCurrentItem(item);
+    setCurrentItem({...item, deadline: new Date(item.deadline)});
     setOpen(true);
   }
 
@@ -92,14 +92,14 @@ export function List() {
           {intl.formatMessage({ id: "list.add" })}
         </Button>
       </div>
-      <ListItemForm
+      <ListItemFormDialog
         open={open}
-        item={currentItem}
+        initialData={currentItem}
         onClose={() => setOpen(false)}
-        onAddItem={(item: Item) =>
+        onSubmit={(item: Item) =>
           currentItem ? updateItemMutation.mutate(item) : addItemMutation.mutate(item)
         }
-      ></ListItemForm>
+      ></ListItemFormDialog>
       {query.isLoading && <LinearProgress />}
       {query.isError && <Alert severity="error">Failed to load items</Alert>}
       {!query.isLoading && <div className="list">{itemList}</div>}

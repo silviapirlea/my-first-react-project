@@ -7,5 +7,6 @@
   "list.delete": "Sterge",
   "list.add": "Adauga item nou",
   "list-item-form.add": "Adauga",
+  "list-item-form.save": "Salveaza",
   "list-item-form.cancel": "Anuleaza"
 }

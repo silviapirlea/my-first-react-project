@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Item, ItemStatus, ItemType } from "../list-item/ListItem.tsx";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  MenuItem,
-} from "@mui/material";
+import React, { useState } from "react";
+import { TextField, MenuItem, Button } from "@mui/material";
 import { useIntl } from "react-intl";
+import { Item, ItemStatus, ItemType } from "../list-item/ListItem";
 
-interface ItemFormProps {
-  open: boolean;
-  item?: Item;
-  onClose: () => void;
-  onAddItem: (item: Item) => void;
+export interface ItemFormProps {
+  initialData: Item;
+  onSubmit: (item: Item) => void;
 }
 
 interface ItemFormErrors {
@@ -23,175 +13,136 @@ interface ItemFormErrors {
   amount?: string;
 }
 
-export function ListItemForm({
-  open,
-  item,
-  onClose,
-  onAddItem,
-}: ItemFormProps) {
-  const initialItemState: Item = {
-    id: Date.now(),
-    name: "",
-    url: "",
-    tags: "",
-    type: ItemType.WATCHLIST,
-    amount: 0,
-    status: ItemStatus.NOT_STARTED,
-    deadline: new Date(),
-    description: "",
-    isRepetable: false,
-  };
-  const [newItem, setNewItem] = useState<Item>(initialItemState);
-
-  useEffect(() => {
-    if (item) {
-      setNewItem({ ...item, deadline: new Date(item.deadline) });
-    } else {
-      setNewItem(initialItemState);
-    }
-  }, [item, open]);
-
-  const [errors, setErrors] = useState<ItemFormErrors>({});
+export function ListItemForm({ initialData, onSubmit }: ItemFormProps) {
   const intl = useIntl();
 
+  const [formData, setFormData] = useState<Item>(initialData);
+  const [errors, setErrors] = useState<ItemFormErrors>({});
   const urlRegex = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,6})([/\w.-]*)*\/?$/;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewItem({ ...newItem, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  function validateForm() {
+  const validateForm = (): boolean => {
     const newErrors: ItemFormErrors = {};
-
-    if (!urlRegex.test(newItem.url)) {
+    if (!urlRegex.test(formData.url)) {
       newErrors.url = "Invalid URL format";
     }
-    if (newItem.amount < 0) {
+    if (Number(formData.amount) < 0) {
       newErrors.amount = "Amount cannot be negative";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }
+  };
 
   const handleSubmit = () => {
     if (!validateForm()) return;
-
-    onAddItem({ ...newItem, id: newItem.id ? newItem.id : Date.now() });
-    setNewItem(initialItemState);
-    onClose();
+    onSubmit({ ...formData || Date.now() });
   };
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add New Item</DialogTitle>
-      <DialogContent>
+      <form>
         <TextField
-          label="Name"
-          name="name"
-          value={newItem.name}
-          onChange={handleChange}
-          fullWidth
-          margin="dense"
-          color="secondary"
+            label="Name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            color="secondary"
         />
         <TextField
-          label="URL"
-          name="url"
-          value={newItem.url}
-          onChange={handleChange}
-          fullWidth
-          color="secondary"
-          margin="dense"
-          error={!!errors.url}
-          helperText={errors.url}
+            label="URL"
+            name="url"
+            value={formData.url}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            color="secondary"
+            error={!!errors.url}
+            helperText={errors.url}
         />
         <TextField
-          label="Tags"
-          name="tags"
-          value={newItem.tags}
-          onChange={handleChange}
-          fullWidth
-          margin="dense"
-          color="secondary"
+            label="Tags"
+            name="tags"
+            value={formData.tags}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            color="secondary"
         />
         <TextField
-          select
-          label="Type"
-          name="type"
-          value={newItem.type}
-          onChange={handleChange}
-          fullWidth
-          margin="dense"
-          color="secondary"
+            select
+            label="Type"
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            color="secondary"
         >
           <MenuItem value={ItemType.WATCHLIST}>Watchlist</MenuItem>
           <MenuItem value={ItemType.BOOKS_LIST}>Books List</MenuItem>
           <MenuItem value={ItemType.SHOPPING_LIST}>Shopping List</MenuItem>
         </TextField>
         <TextField
-          select
-          label="Status"
-          name="status"
-          value={newItem.status}
-          onChange={handleChange}
-          fullWidth
-          margin="dense"
-          color="secondary"
+            select
+            label="Status"
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            color="secondary"
         >
           <MenuItem value={ItemStatus.NOT_STARTED}>Not Started</MenuItem>
           <MenuItem value={ItemStatus.IN_PROGRESS}>In Progress</MenuItem>
           <MenuItem value={ItemStatus.COMPLETED}>Completed</MenuItem>
         </TextField>
         <TextField
-          label="Amount"
-          name="amount"
-          type="number"
-          value={newItem.amount}
-          onChange={handleChange}
-          fullWidth
-          margin="dense"
-          color="secondary"
-          error={!!errors.amount}
-          helperText={errors.amount}
+            label="Amount"
+            name="amount"
+            type="number"
+            value={formData.amount}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            color="secondary"
+            error={!!errors.amount}
+            helperText={errors.amount}
         />
         <TextField
-          label="Deadline"
-          name="deadline"
-          type="date"
-          value={newItem.deadline.toISOString().split("T")[0]}
-          onChange={(e) =>
-            setNewItem({ ...newItem, deadline: new Date(e.target.value) })
-          }
-          fullWidth
-          margin="dense"
-          color="secondary"
+            label="Deadline"
+            name="deadline"
+            type="date"
+            value={formData.deadline.toISOString().split("T")[0]}
+            onChange={(e) =>
+                setFormData({ ...formData, deadline: new Date(e.target.value) })
+            }
+            fullWidth
+            margin="dense"
+            color="secondary"
         />
         <TextField
-          label="Description"
-          name="description"
-          value={newItem.description}
-          onChange={handleChange}
-          fullWidth
-          margin="dense"
-          color="secondary"
-          multiline
-          rows={3}
+            label="Description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            fullWidth
+            margin="dense"
+            color="secondary"
+            multiline
+            rows={3}
         />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>
-          {intl.formatMessage({ id: "list-item-form.cancel" })}
-        </Button>
         <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="secondary"
-          disabled={!validateForm}
+            onClick={handleSubmit}
+            variant="contained"
+            color="secondary"
+            style={{ marginTop: "16px" }}
         >
-          {intl.formatMessage({ id: "list-item-form.add" })}
+          {intl.formatMessage({ id: "list-item-form.save" })}
         </Button>
-      </DialogActions>
-    </Dialog>
+      </form>
   );
 }
