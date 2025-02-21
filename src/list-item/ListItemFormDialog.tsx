@@ -1,7 +1,7 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from "@mui/material";
 import { useIntl } from "react-intl";
-import {ListItemForm} from "./ListItemForm.tsx";
 import {Item, ItemStatus, ItemType} from "./ListItem.tsx";
+import {ListItemFormik} from "./ListItemFormik.tsx";
 
 interface ItemDialogProps {
     open: boolean;
@@ -33,7 +33,7 @@ export function ListItemFormDialog({ open, onClose, initialData, onSubmit }: Ite
         <Dialog open={open} onClose={onClose} fullWidth>
             <DialogTitle>{initialData ? "Edit Item" : "Add New Item"}</DialogTitle>
             <DialogContent>
-                <ListItemForm initialData={initialData || defaultItem} onSubmit={handleSubmit} />
+                <ListItemFormik initialData={initialData || defaultItem} onSubmit={handleSubmit} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>
