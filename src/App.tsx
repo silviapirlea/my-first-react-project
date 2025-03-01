@@ -11,6 +11,8 @@ import {RecoilRoot} from "recoil";
 import {itemsLoader} from "./loaders/itemsLoader.tsx";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {getFromStorage, setToStorage} from "./storage/storage.service.ts";
+import {LANGUAGE_KEY} from "./utils/constants.tsx";
 
 const router = createBrowserRouter([
     {
@@ -32,11 +34,14 @@ const messages = {
     ro: roMessages,
 };
 
+const queryClient = new QueryClient();
+
 function App() {
-    const [locale, setLocale] = useState("en");
-    const queryClient = new QueryClient();
+    const currentLanguage = getFromStorage(LANGUAGE_KEY)
+    const [locale, setLocale] = useState(currentLanguage ? currentLanguage  : "en");
 
     const changeLanguage = (lang: string) => {
+        setToStorage(LANGUAGE_KEY, lang);
         setLocale(lang);
     };
 

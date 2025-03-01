@@ -54,9 +54,11 @@ export function useItemsQuery() {
     refetchOnWindowFocus: false
   });
 
-  if(data) {
-    setItems(data);
-  }
+  useEffect(() => {
+    if(data) {
+      setItems(data);
+    }
+  }, [data]);
 
   return { data, isLoading, isError };
 }
