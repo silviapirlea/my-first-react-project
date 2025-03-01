@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Item } from "../list-item/ListItem.tsx";
 import { useSetRecoilState } from "recoil";
-import { itemsState } from "../state/recoil_state.ts";
+import { itemsState } from "../state/RecoilState.ts";
 import { useQuery } from "@tanstack/react-query";
-import {BASE_API_URL} from "../utils/constants.tsx";
+import {BASE_API_URL} from "../utils/constants.ts";
 
 // te old version with local state management
 export function useItems(): Item[] {
@@ -58,7 +58,7 @@ export function useItemsQuery() {
     if(data) {
       setItems(data);
     }
-  }, [data]);
+  }, [data, setItems]);
 
   return { data, isLoading, isError };
 }

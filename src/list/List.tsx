@@ -1,15 +1,16 @@
 import { Item, ListItem } from "../list-item/ListItem.tsx";
 import { useRecoilValue } from "recoil";
-import { filteredItemsState } from "../state/recoil_state.ts";
+import { filteredItemsState } from "../state/RecoilState.ts";
 import { useState } from "react";
 import {Alert, Button, LinearProgress} from "@mui/material";
 import './List.css'
 import { Add } from "@mui/icons-material";
-import { BASE_API_URL } from "../utils/constants.tsx";
+import { BASE_API_URL } from "../utils/constants.ts";
 import { useIntl } from "react-intl";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {useItemsQuery} from "./UseItems.tsx";
 import {ListItemFormDialog} from "../list-item/ListItemFormDialog.tsx";
+import {useItemsQuery} from "./UseItems.tsx";
+import {useRevalidator} from "react-router";
 
 export function List() {
   const [open, setOpen] = useState(false);
@@ -18,6 +19,7 @@ export function List() {
   const query = useItemsQuery();
   const filteredItems = useRecoilValue(filteredItemsState);
   const queryClient = useQueryClient();
+  const revalidator = useRevalidator()
 
   function openFormWithItem(item: Item): void {
     setCurrentItem({...item, deadline: new Date(item.deadline)});
@@ -36,7 +38,7 @@ export function List() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({queryKey: ["items"]});
+      await revalidator.revalidate();
     },
   });
 
@@ -69,7 +71,7 @@ export function List() {
     },
   });
 
-  const itemList = filteredItems.map((item) => (
+  const itemList = filteredItems.map((item: Item) => (
     <ListItem
       key={item.id}
       item={item}

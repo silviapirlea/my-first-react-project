@@ -7,7 +7,7 @@ import { makeStyles } from "@mui/styles";
 import { useIntl } from "react-intl";
 import { ItemType } from "../list-item/ListItem.tsx";
 import { useSetRecoilState } from "recoil";
-import { itemsTypeState } from "../state/recoil_state.ts";
+import { itemsTypeState } from "../state/RecoilState.ts";
 
 export function Nav() {
   return (

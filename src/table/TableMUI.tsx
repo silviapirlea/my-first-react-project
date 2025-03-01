@@ -10,14 +10,9 @@ import {
 import Table from "@mui/material/Table";
 import { flexRender } from "@tanstack/react-table";
 import { useRecoilValue } from "recoil";
-import { filteredItemsState } from "../state/recoil_state.ts";
+import { filteredItemsState } from "../state/RecoilState.ts";
 
 export function TableMUI() {
-  // const items = useItems();
-  // const filteredItems = useMemo(() => {
-  //     return items.filter(item => props.type == ItemType.ALL || item.type === props.type);
-  // }, [items, props.type]);
-
   const filteredItems = useRecoilValue(filteredItemsState);
 
   const table = useTableItems(filteredItems);

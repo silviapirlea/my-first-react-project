@@ -29,31 +29,33 @@ export enum ItemType {
   ALL,
 }
 
-export function ListItem(props: {
-  item: Item;
-  onUpdate: (item: Item) => void;
-  onDelete: (id: number) => void;
-}) {
+export interface ListItemProps {
+    item: Item,
+    onUpdate: (item: Item) => void,
+    onDelete: (id: number) => void,
+}
+
+export function ListItem({item, onUpdate, onDelete}: ListItemProps) {
   const intl = useIntl();
 
   return (
     <div className="item">
-      <p>{"Name: " + props.item.name}</p>
-      <a href={props.item.url} target={"_blank"}>
-        {props.item.url}
+      <p>{"Name: " + item.name}</p>
+      <a href={item.url} target={"_blank"}>
+        {item.url}
       </a>
-      <p>{"Tags: " + props.item.tags}</p>
-      <p>{"Type: " + props.item.type}</p>
-      <p>{"Amount: " + props.item.amount ? props.item.amount : 0}</p>
-      <p>{"Status: " + props.item.status}</p>
-      <p>{"Deadline: " + props.item.deadline}</p>
-      <p>{"Description: " + props.item.description}</p>
-      <p>{props.item.isRepetable ? "Repetable" : "Nonrepetable"}</p>
+      <p>{"Tags: " + item.tags}</p>
+      <p>{"Type: " + item.type}</p>
+      <p>{"Amount: " + item.amount ? item.amount : 0}</p>
+      <p>{"Status: " + item.status}</p>
+      <p>{"Deadline: " + item.deadline}</p>
+      <p>{"Description: " + item.description}</p>
+      <p>{item.isRepetable ? "Repetable" : "Nonrepetable"}</p>
       <div className="actions">
         <Button
           color="secondary"
           variant="contained"
-          onClick={() => props.onUpdate(props.item)}
+          onClick={() => onUpdate(item)}
         >
           {intl.formatMessage({ id: "list.update" })}
         </Button>
@@ -61,7 +63,7 @@ export function ListItem(props: {
           color="error"
           variant="contained"
           startIcon={<Delete />}
-          onClick={() => props.onDelete(props.item.id)}
+          onClick={() => onDelete(item.id)}
         >
           {intl.formatMessage({ id: "list.delete" })}
         </Button>
